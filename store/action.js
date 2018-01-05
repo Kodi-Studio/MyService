@@ -1,7 +1,7 @@
-export const getUser = (loginSaisie) => {
+export const initUser = (logged) => {
     return{
         type: "LOGIN",
-        loginSaisie
+        logged,
     }
 }
 

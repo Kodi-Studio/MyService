@@ -10,8 +10,12 @@ const loginActions = (state= {} , action) => {
     
      switch (action.type) {
         case 'LOGIN':
-            if(testConnect(action.loginSaisie)) { return {logged:true} } else { return {logged:false};  } 
+            //console.log('---------------------------');
+           // console.log( testConnect(action.loginSaisie, action.passSaisie) );
+            //if(testConnect(action.loginSaisie, action.passSaisie)) { return {logged:true} } else { return {logged:false};  } 
             //return {login:action.loginSaisie}; //Object.assign( {}, {login:action.loginSaisie} ) ;
+            console.log('+++'+action.logged);
+            return { logged:action.logged }
         default:
             return state;
      }
@@ -36,20 +40,3 @@ const userLog = combineReducers({
 //let store = createStore(userLog);
 
 export default store = createStore(userLog);
-
-
-
-
-
-////// other function
-
-const testConnect = (login) => {
-
-    //// verification a faire ici
-    return true;
-
-}
-
-
-
-

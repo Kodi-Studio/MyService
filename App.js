@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
 /// components views
 import Login from './components/Login';
@@ -15,24 +15,30 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = { 
-      logged:false
+      logged:'false'
     };
-    console.log(this.state);
     store.subscribe(() => { 
-      //console.log('change !!!!');  
-      console.log(store.getState());
-      //this.setState({logged:store});
       this.setState({logged:store.getState().loginActions.logged});
     });
    
-    ///store.dispatch({type:'LOGIN', text:'toto'});
-
   }
 
   render() {
     var screen  ;
-    if(this.state.logged==false) screen = <Login /> ;
-    else screen = <Text>Bienvenue</Text>
+    /*if(this.state.logged=='false') screen = <Login /> ;
+    else screen = <View style={styles.container} ><Text  >Bienvenue</Text></View>
+    switch(this.state)*/
+    switch(this.state.logged){
+      case 'false':
+        screen = <Login />
+        break
+      case 'pendding':
+        screen = <View style={styles.container} ><ActivityIndicator size="large" color="#ea654c" /></View>
+        break
+      case 'true':
+        screen = <View style={styles.container} ><Text  >Bienvenue</Text></View>
+        break
+    }
 
     return (
       <Provider store={store} >
