@@ -1,16 +1,42 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ImageBackground, StatusBar } from 'react-native';
 
+import styles from './styles/globalStyles';
 /// components views
 import Login from './components/Login';
+import Home from './components/Home';
+import ProfileScreen from './components/ProfileScreen';
+
+///// partie recherche
+import SearchHome from './components/searchHome.js';
+import SearchResults from './components/searchResults.js';
+
 
 import { Provider } from 'react-redux';
 
 import store from './store/index';
 
+import {  StackNavigator, TabNavigator } from 'react-navigation';
+
+///// compoants de navigation
+const SearchNav = StackNavigator({
+  Search: { screen: SearchHome },
+  SearchResults: { screen: SearchResults }
+},{
+header: true
+});
+
+const App = TabNavigator({
+  Message: { screen: Home },
+  Profile: { screen:ProfileScreen },
+  Search: { screen:SearchNav }
+},{
+header: false
+});
+/////////////////////////////////
 
 
-export default class App extends React.Component {
+export default class myApp extends React.Component {
 
   constructor(props){
     super(props);
@@ -25,9 +51,6 @@ export default class App extends React.Component {
 
   render() {
     var screen  ;
-    /*if(this.state.logged=='false') screen = <Login /> ;
-    else screen = <View style={styles.container} ><Text  >Bienvenue</Text></View>
-    switch(this.state)*/
     switch(this.state.logged){
       case 'false':
         screen = <Login />
@@ -36,23 +59,20 @@ export default class App extends React.Component {
         screen = <View style={styles.container} ><ActivityIndicator size="large" color="#ea654c" /></View>
         break
       case 'true':
-        screen = <View style={styles.container} ><Text  >Bienvenue</Text></View>
+        screen = <App />
         break
     }
 
     return (
+
       <Provider store={store} >
-        {screen}
+        <View style={{'flex':1}} > 
+           <StatusBar
+              hidden={true}
+            />
+            {screen}
+        </View>
       </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

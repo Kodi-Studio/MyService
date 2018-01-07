@@ -1,13 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View , TextInput, Button} from 'react-native';
-
+import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image} from 'react-native';
+import styles from '../styles/globalStyles';
 import { connect } from 'react-redux';
-
 import { initUser } from '../store/action';
-
-//import store from '../store/index';
-
-
 import { map } from 'react-redux';
 
 class Login extends React.Component {
@@ -43,26 +38,103 @@ class Login extends React.Component {
       ///this.props.onSubmit(this.state.login, this.state.pass);
   }
 
+  navToRegister() {
+    
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput editable={true} placeholder={'Identifiant'} value={this.state.login} editable={true} onChangeText= {(login) => this.setState({login})} style={ {width:200, height:50, borderWidth:1 } } />
-        <TextInput editable={true} placeholder={'Mot de passe'} value={this.state.pass} editable={true} onChangeText= {(pass) => this.setState({pass})} style={ {width:200, height:50, borderWidth:1 } } />
-        <Button title={'Connexion'} onPress={()=>this.tryConnect()} />
+     <View style={styles.main} >
+      <View style={styles.headerHome} >
+        <Image source={require('../assets/logoH.png')} />
       </View>
+      <ImageBackground source={require('../assets/bgH.png')} style={styles.mainBG} > 
+
+        <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Identifiant'} value={this.state.login} editable={true} onChangeText= {(login) => this.setState({login})} style={ styles.inputTop } />
+        <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Mot de passe'} value={this.state.pass} editable={true} onChangeText= {(pass) => this.setState({pass})} style={ styles.input } secureTextEntry={true} />
+        <TouchableHighlight  style={styles.buttonBottom}  onPress={ ()=>this.tryConnect() } >
+          <Text style={styles.buttonText} > Connexion </Text>
+        </TouchableHighlight>
+        <TouchableHighlight  style={styles.buttonTransparent}  onPress={ ()=>this.navToRegister() } >
+          <Text style={styles.buttonText} > Inscription </Text>
+        </TouchableHighlight>
+        
+      </ImageBackground>
+    </View>
     );
   }
 }
 
+/*
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  headerHome: {
+    backgroundColor:"#FFFFFF",
+    height:'25%',
     alignItems: 'center',
     justifyContent: 'center',
+    width:'100%'
   },
+  main: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  },
+  mainBG: {
+    height: '75%',
+    width: '100%',
+    flex: 1,
+    alignItems: 'center'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  input: {
+    width: 200,
+    height:50,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    paddingHorizontal: 10,
+    fontSize: 18,
+    textAlign: "center"
+  },
+  inputTop: {
+    width: 200,
+    height:50,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    paddingHorizontal: 10,
+    fontSize: 18,
+    textAlign: "center"
+  },
+  buttonBottom: {
+    backgroundColor: '#ea654c',
+    width: 200,
+    height:50,
+    alignItems: 'center',
+    padding: 15,
+    borderBottomLeftRadius : 8,
+    borderBottomRightRadius : 8
+  },
+  buttonTransparent: {
+    backgroundColor: 'transparent',
+    width: 200,
+    height:50,
+    alignItems: 'center',
+    padding: 15,
+    borderBottomLeftRadius : 8,
+    borderBottomRightRadius : 8,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF'
+  }
 });
-
+*/
 
 const mapSateToProps = (state) => {
   return {
@@ -74,7 +146,6 @@ const mapDispatchToProps = (dispatch) => {
 
   return {
     confirmLogged: (logged) => {
-      console.log('onSubmit :'+logged) ;
       dispatch( initUser(logged) ) ;
     },
     peddingLogin: (logged) => {
