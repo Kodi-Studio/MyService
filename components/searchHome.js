@@ -1,18 +1,21 @@
 import React from 'react';
 import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image } from 'react-native';
 
-import { Autocomplete } from 'react-native-autocomplete-input'
+import { AutoComplete } from 'react-native-autocomplete-input'
 
 
 class SearchHome extends React.Component {
     
       constructor(props) {
           super(props);
-          this.state = {
-              data: store.getState()
-              }
+          this.state = store.getState();
       }
-     
+      onTyping(text) {
+          ///
+      }
+      onSelect() {
+         ///
+      }
     
       render(){ 
 
@@ -20,16 +23,9 @@ class SearchHome extends React.Component {
 
         return (
 
-            <Autocomplete
-                data={data}
-                defaultValue={query}
-                onChangeText={text => this.setState({ query: text })}
-                renderItem={data => (
-                <TouchableOpacity onPress={() => this.setState({ query: data })}>
-                    <Text>{data}</Text>
-                </TouchableOpacity>
-                )}
-            />
+            <View>
+                <Text>Search for a country</Text>
+            </View>
 
         );
 

@@ -7,7 +7,6 @@ export const initialState = {
 }
 
 const loginActions = (state= {} , action) => {
-    
      switch (action.type) {
         case 'LOGIN':
             console.log('+++'+action.logged);
@@ -26,10 +25,23 @@ const disconnect = (state= {} , action) => {
             return initialState;
     }
 }
+const getUserDatas = ( state = { } , action  ) => {
+    switch (action.type) {
+        case 'INIT_USER':
+            console.log('+++'+action.type);
+            return { userDatas:action.userDatas }
+        default:
+            return state;
+     }
+}
+
+
+
     
 const userLog = combineReducers({
     loginActions,
-    disconnect
+    disconnect,
+    getUserDatas
 })
 
 

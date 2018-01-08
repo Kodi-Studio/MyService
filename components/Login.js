@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image} from 'react-native';
 import styles from '../styles/globalStyles';
 import { connect } from 'react-redux';
-import { initUser } from '../store/action';
+import { initUser , initUserLogged } from '../store/action';
 import { map } from 'react-redux';
 
 class Login extends React.Component {
@@ -26,8 +26,9 @@ class Login extends React.Component {
       )
       .then((response) => response.json())
       .then((responseJson) => {
-          console.log('--->'+responseJson.logged);
+          console.log('--->'+responseJson.user);
           this.props.confirmLogged( responseJson.logged );
+          this.props.confirmUser( responseJson.user );
           return; // responseJson.logged;
       })
       .catch((error) => {
@@ -65,76 +66,6 @@ class Login extends React.Component {
   }
 }
 
-/*
-const styles = StyleSheet.create({
-  headerHome: {
-    backgroundColor:"#FFFFFF",
-    height:'25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width:'100%'
-  },
-  main: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%'
-  },
-  mainBG: {
-    height: '75%',
-    width: '100%',
-    flex: 1,
-    alignItems: 'center'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
-  },
-  input: {
-    width: 200,
-    height:50,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    paddingHorizontal: 10,
-    fontSize: 18,
-    textAlign: "center"
-  },
-  inputTop: {
-    width: 200,
-    height:50,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    paddingHorizontal: 10,
-    fontSize: 18,
-    textAlign: "center"
-  },
-  buttonBottom: {
-    backgroundColor: '#ea654c',
-    width: 200,
-    height:50,
-    alignItems: 'center',
-    padding: 15,
-    borderBottomLeftRadius : 8,
-    borderBottomRightRadius : 8
-  },
-  buttonTransparent: {
-    backgroundColor: 'transparent',
-    width: 200,
-    height:50,
-    alignItems: 'center',
-    padding: 15,
-    borderBottomLeftRadius : 8,
-    borderBottomRightRadius : 8,
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF'
-  }
-});
-*/
 
 const mapSateToProps = (state) => {
   return {
@@ -145,11 +76,14 @@ const mapSateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
   return {
-    confirmLogged: (logged) => {
-      dispatch( initUser(logged) ) ;
-    },
     peddingLogin: (logged) => {
       dispatch( initUser(logged) ) ;
+    },
+    confirmLogged: (logged) => {
+      dispatch( initUserLogged(logged) ) ;
+    },
+    confirmUser: (user) => {
+      dispatch( initUser( user ) );
     }
   }
 }

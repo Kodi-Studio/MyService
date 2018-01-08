@@ -22,6 +22,7 @@ class Home extends React.Component {
     
       constructor(props) {
           super(props);
+          this.state = store.getState();
       }
       static navigationOptions = {
         header: null
@@ -34,7 +35,6 @@ class Home extends React.Component {
       }
 
       render(){ 
-
 
 
         return (
