@@ -19,3 +19,12 @@ export const actionDisconnect = (disconnect) => {
         disconnect,
     }
 }
+
+export const initListeCates = (catesParent , cates) => {
+    return  {
+        type: "INIT_CATES",
+        catesParent,
+        cates
+    }
+
+}

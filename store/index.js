@@ -28,20 +28,29 @@ const disconnect = (state= {} , action) => {
 const getUserDatas = ( state = { } , action  ) => {
     switch (action.type) {
         case 'INIT_USER':
-            console.log('+++'+action.type);
+            console.log('+++'+action.userDatas);
             return { userDatas:action.userDatas }
         default:
             return state;
      }
 }
 
+const getListeCates = ( state = { } , action ) => {
+    switch (action.type) {
+        case 'INIT_CATES' : 
+            console.log('liste des catégories : ');
+            return { catesParent:action.catesParent , cates:action.cates }
+        default :
+            return state;
+    }
 
+}
 
-    
 const userLog = combineReducers({
     loginActions,
     disconnect,
-    getUserDatas
+    getUserDatas,
+    getListeCates
 })
 
 

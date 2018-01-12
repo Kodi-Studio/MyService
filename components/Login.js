@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image} from 'react-native';
 import styles from '../styles/globalStyles';
 import { connect } from 'react-redux';
-import { initUser , initUserLogged } from '../store/action';
+import { initUser , initUserLogged, initListeCates } from '../store/action';
 import { map } from 'react-redux';
 
 class Login extends React.Component {
@@ -26,9 +26,12 @@ class Login extends React.Component {
       )
       .then((response) => response.json())
       .then((responseJson) => {
-          console.log('--->'+responseJson.user);
+          console.log('Datas user : '+responseJson.userDatas);
+          console.log('Cates parentes : '+responseJson.catesParent);
+          console.log('Cates : '+responseJson.cates);
           this.props.confirmLogged( responseJson.logged );
-          this.props.confirmUser( responseJson.user );
+          this.props.confirmUser( responseJson.userDatas );
+          this.props.confirmListeCates( responseJson.catesParent , responseJson.cates );
           return; // responseJson.logged;
       })
       .catch((error) => {
@@ -38,7 +41,7 @@ class Login extends React.Component {
 
       ///this.props.onSubmit(this.state.login, this.state.pass);
   }
-
+  
   navToRegister() {
     
   }
@@ -84,7 +87,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     confirmUser: (user) => {
       dispatch( initUser( user ) );
+    },
+    confirmListeCates: ( catesParent , cates ) => {
+      dispatch ( initListeCates(catesParent , cates) );
     }
+
   }
 }
 

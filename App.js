@@ -43,7 +43,7 @@ export default class myApp extends React.Component {
     this.state = { 
       logged:'false'
     };
-    store.subscribe(() => { 
+    store.subscribe(() => {
       this.setState({logged:store.getState().loginActions.logged});
     });
    
