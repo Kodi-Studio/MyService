@@ -11,13 +11,19 @@ class SearchHome extends React.Component {
         this.state = store.getState();
         this.state = {
             ...this.state,
-            'PickerValueHolder':'',
-            'listeCates': '',
+            'cates':store.getState().getListeCates.cates,
+
             'modalCatesParentVisible': false,
+            'modalCatesVisible': false,
+
             'selectedCateParentLabel': 'Catégorie',
-            'selectedCateParentId': '',
-            'selectedCateLabel' : 'Sous Catégirie',
-            'selectedCateId' : '',
+            'selectedCateParentId': store.getState().getListeCates.catesParent[0].id,
+
+            'selectedCateLabel' : 'Sous Catégorie',
+            'selectedCateId' : 'All',
+
+            'cateParentSelected' : false,
+            'cateSelected' : false
         }
 
     }
@@ -28,19 +34,64 @@ class SearchHome extends React.Component {
     onTyping(text) {
         ///
     }
-    onChange(value,index) {
-        ///
-        //alert( this.state.getListeCates.catesParent[index].mscat_libelle );
-        this.setState({'PickerValueHolder':value , 'selectedCateParentId':value , 'selectedCateParentLabel': this.state.getListeCates.catesParent[index].mscat_libelle });
+    onChangeCateParent(value,index) {
+        this.setState({'selectedCateParentId':value , 'selectedCateParentLabel': this.state.getListeCates.catesParent[index].mscat_libelle });
     }
-    closeModalCatesParent(){
-        this.setState({ 'modalCatesParentVisible':false});
-        //alert( this.state.PickerValueHolder );
+    onChangeCate(value,index) {
+        this.setState({'selectedCateId':value , 'selectedCateLabel': this.state.cates[index].mscat_libelle });
+    }
+    closeModalCatesParent(){ this.setState({ 'modalCatesParentVisible':false});   }
+    closeModalCates(){  this.setState({ 'modalCatesVisible':false});   }
+    selectParentCates(){
+        if(this.state.selectedCateParentId == store.getState().getListeCates.catesParent[0].id) this.setState( {'selectedCateParentLabel': store.getState().getListeCates.catesParent[0].mscat_libelle } );
+        var tri = [];
+        this.state.getListeCates.cates.forEach(element => {
+            if(element.mscat_parent == this.state.selectedCateParentId)  tri.push(element)
+        });
+        this.setState({'cates':tri , 'selectedCateId':'All' , 'cateParentSelected': true});
+        this.closeModalCatesParent();
+    }
+    selectCates(){
+        if(this.state.selectedCateId == 'All') this.setState( {'selectedCateLabel': 'Toutes les sous-catégories' } );
+        this.setState({'cateSelected':true});
+
+        this.closeModalCates();
     }
     showResults(){
-        alert('on lance la recherche');
+        
+        console.log( "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId );
+        //////// requete web service ->liste de résultats
+        return fetch( 'https://www.myservice-collaboratif.com/app/servicerListe.php' , {
+            method : 'POST', 
+            headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" },
+            body: "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId
+              }
+            )
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log('reponse');
+                console.log(responseJson);
+                return; // responseJson.logged;
+            })
+            .catch((error) => {
+              // console.error(error);
+              return false;
+            });
+        
+
+
     }
+    
+
     render(){ 
+        
+        if(this.state.cateParentSelected==true) var libelleAffinerRecherche = 
+            <View>
+                <Text >Affiner votre recherche : </Text>
+                <Text onPress={()=>this.setState({'modalCatesVisible':true})}  >{this.state.selectedCateLabel}</Text>
+            </View>;
+        else var libelleAffinerRecherchetoto = null;
+        
         return (
             <View>
                 <Text>Rechercher un servicer :</Text>
@@ -53,14 +104,30 @@ class SearchHome extends React.Component {
                         animationType={'slide'}
                         onRequestClose={() => this.closeModal()}
                     >
-                        <Picker selectedValue={this.state.PickerValueHolder}   onValueChange={(itemValue, itemIndex) => this.onChange(itemValue,itemIndex)} >
+                        <Picker selectedValue={this.state.selectedCateParentId} onValueChange={(itemValue, itemIndex) => this.onChangeCateParent(itemValue,itemIndex)} >
                             {this.state.getListeCates.catesParent.map((item, key) => 
-                                <Picker.Item style={{'fontWeight':'bold'} } label={item.mscat_libelle} value={'mscat_parent-'+item.id} key={key}  />
+                                <Picker.Item label={item.mscat_libelle} value={item.id} key={key}  />
                             )} 
                         </Picker>
-                        <Button onPress={()=>this.closeModalCatesParent()} title='Valider'   />
+                        <Button onPress={()=>this.selectParentCates()} title='Valider'   />
                     </Modal>
                     { /* END modale de sélection de catégorie parent */ }
+                    {libelleAffinerRecherche}
+                    { /* modale de sélection de catégorie  */ }
+                    <Modal
+                        visible={this.state.modalCatesVisible}
+                        animationType={'slide'}
+                        onRequestClose={() => this.closeModal()}
+                    >
+                        <Picker selectedValue={this.state.selectedCateId}   onValueChange={(itemValue, itemIndex) => this.onChangeCate(itemValue,itemIndex)} >
+                            <Picker.Item label={'Toutes les sous catégories'} value={'All'} key={0}  />
+                            {this.state.cates.map((item, key) => 
+                                <Picker.Item label={item.mscat_libelle} value={item.id} key={key+1}  />
+                            )} 
+                        </Picker>
+                        <Button onPress={()=>this.selectCates()} title='Choisir'   />
+                    </Modal>
+                    { /* END modale de sélection de catégorie  */ }
 
                     <Button title={"Trouver.."} onPress={()=>this.showResults()} />
 
