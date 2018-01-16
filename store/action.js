@@ -28,3 +28,11 @@ export const initListeCates = (catesParent , cates) => {
     }
 
 }
+
+export const initUserListe = (liste) => {
+    return  {
+        type: "INIT_USER_LISTE",
+        liste
+    }
+
+}

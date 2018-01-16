@@ -65,4 +65,4 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
   
-  export default connect (mapSateToProps , mapDispatchToProps)(Home);
+export default connect (mapSateToProps , mapDispatchToProps)(Home);

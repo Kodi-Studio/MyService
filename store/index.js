@@ -46,11 +46,23 @@ const getListeCates = ( state = { } , action ) => {
 
 }
 
+const getListeUsersFound = ( state = { } , action ) => {
+    switch (action.type) {
+        case 'INIT_USER_LISTE' : 
+            return { listeUsers:action.liste }
+        default :
+            return state;
+    }
+
+}
+
+
 const userLog = combineReducers({
     loginActions,
     disconnect,
     getUserDatas,
-    getListeCates
+    getListeCates,
+    getListeUsersFound
 })
 
 

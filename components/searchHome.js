@@ -1,11 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image, Picker, Modal } from 'react-native';
+import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image, Picker, Modal, ActivityIndicator } from 'react-native';
 
-import { AutoComplete } from 'react-native-autocomplete-input'
+import { connect } from 'react-redux';
+import { initUserListe } from '../store/action';
+import { map } from 'react-redux';
+
+import { navigationOptions } from 'react-navigation'
+
+import styles from '../styles/globalStyles';
 
 
 class SearchHome extends React.Component {
-    
+    static navigationOptions = {
+        title : 'Recherche'
+    }
     constructor(props) {
         super(props);
         this.state = store.getState();
@@ -23,16 +31,16 @@ class SearchHome extends React.Component {
             'selectedCateId' : 'All',
 
             'cateParentSelected' : false,
-            'cateSelected' : false
+            'cateSelected' : false,
+
+            'waitWs' : false,
+            'found' : false
         }
 
     }
 
     componentDidMount() {
     //
-    }
-    onTyping(text) {
-        ///
     }
     onChangeCateParent(value,index) {
         this.setState({'selectedCateParentId':value , 'selectedCateParentLabel': this.state.getListeCates.catesParent[index].mscat_libelle });
@@ -54,13 +62,13 @@ class SearchHome extends React.Component {
     selectCates(){
         if(this.state.selectedCateId == 'All') this.setState( {'selectedCateLabel': 'Toutes les sous-catégories' } );
         this.setState({'cateSelected':true});
-
         this.closeModalCates();
     }
     showResults(){
         
         console.log( "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId );
         //////// requete web service ->liste de résultats
+        this.setState({'waitWs':true});
         return fetch( 'https://www.myservice-collaboratif.com/app/servicerListe.php' , {
             method : 'POST', 
             headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" },
@@ -69,31 +77,41 @@ class SearchHome extends React.Component {
             )
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log('reponse');
-                console.log(responseJson);
+                this.setState({'waitWs':false});
+                this.props.sendResult(responseJson.USER_LISTE)
+                this.props.navigation.navigate('SearchResults');
                 return; // responseJson.logged;
             })
             .catch((error) => {
               // console.error(error);
               return false;
             });
-        
-
-
     }
     
 
     render(){ 
         
-        if(this.state.cateParentSelected==true) var libelleAffinerRecherche = 
+        if(this.state.cateParentSelected==true && this.state.found == false ) var libelleAffinerRecherche = 
             <View>
                 <Text >Affiner votre recherche : </Text>
                 <Text onPress={()=>this.setState({'modalCatesVisible':true})}  >{this.state.selectedCateLabel}</Text>
             </View>;
         else var libelleAffinerRecherchetoto = null;
+
+        var spinner  ;
+        switch(this.state.waitWs){
+          case true:
+            spinner = <View style={styles.container} ><ActivityIndicator size="large" color="#ea654c" /></View>
+            break
+          case false:
+            spinner= null
+            break
+        }
+
         
         return (
-            <View>
+
+            <View style={styles.container} >
                 <Text>Rechercher un servicer :</Text>
                 <View>
                     <Text onPress={()=>this.setState({'modalCatesParentVisible':true})}  >{this.state.selectedCateParentLabel}</Text>
@@ -128,8 +146,10 @@ class SearchHome extends React.Component {
                         <Button onPress={()=>this.selectCates()} title='Choisir'   />
                     </Modal>
                     { /* END modale de sélection de catégorie  */ }
-
+                    <View>{spinner}</View>
+                    <View>
                     <Button title={"Trouver.."} onPress={()=>this.showResults()} />
+                    </View>
 
                 </View>
                     
@@ -140,4 +160,20 @@ class SearchHome extends React.Component {
     };
 }
 
-export default SearchHome;
+const mapSateToProps = (state) => {
+    return {
+      login: state.login,
+      pass: state.pass
+    }
+  }
+  const mapDispatchToProps = (dispatch) => {
+  
+    return {
+      sendResult: (liste) => {
+        dispatch( initUserListe(liste) ) ;
+      }  
+    }
+  }
+  
+  export default connect (mapSateToProps , mapDispatchToProps)(SearchHome);
+//export default SearchHome;
