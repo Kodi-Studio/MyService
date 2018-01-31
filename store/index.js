@@ -9,8 +9,9 @@ export const initialState = {
 const loginActions = (state= {} , action) => {
      switch (action.type) {
         case 'LOGIN':
-            console.log('+++'+action.logged);
-            return { logged:action.logged }
+           // console.log('+++'+action.logged);
+            return { logged:action.logged };
+            break;
         default:
             return state;
      }
@@ -21,15 +22,18 @@ const disconnect = (state= {} , action) => {
     switch (action.type) {
         case 'UNLOG':
             return initialState;
+            break;
         default:
             return initialState;
+            break;
     }
 }
 const getUserDatas = ( state = { } , action  ) => {
     switch (action.type) {
         case 'INIT_USER':
-            console.log('+++'+action.userDatas);
-            return { userDatas:action.userDatas }
+           //console.log('+++'+action.userDatas);
+            return { userDatas:action.userDatas };
+            break;
         default:
             return state;
      }
@@ -37,11 +41,17 @@ const getUserDatas = ( state = { } , action  ) => {
 
 const getListeCates = ( state = { } , action ) => {
     switch (action.type) {
-        case 'INIT_CATES' : 
-            console.log('liste des catégories : ');
-            return { catesParent:action.catesParent , cates:action.cates }
-        default :
-            return state;
+        case 'INITCATES' : {
+            //console.log('liste des catégories : ');
+            //console.log(action.catesParent);
+            return { catesParent:action.catesParent , cates:action.cates };
+            //return { catesParent:Array.from(action.catesParent) , cates:Array.from(action.cates) };
+            break;
+        }
+
+        default : {
+            return state
+        }
     }
 
 }
@@ -49,12 +59,37 @@ const getListeCates = ( state = { } , action ) => {
 const getListeUsersFound = ( state = { } , action ) => {
     switch (action.type) {
         case 'INIT_USER_LISTE' : 
-            return { listeUsers:action.liste }
+            return { listeUsers:action.liste };
+            break;
         default :
             return state;
     }
 
 }
+
+const selectedServicer = ( state = { } ,  action) => {
+    switch (action.type) {
+        case 'INIT_SELECTED_SERVICER' :
+            return { datas:action.datas };
+            break;
+        default :
+            return state;
+    }
+}
+
+const requestToSlideToServicer = ( state = { } , action) => {
+    switch (action.type) {
+        case 'REQUEST_SLIDE_TO_SERVICER_ONSCREEN' :
+            return { slideTo:'true' };
+            break;
+        case 'SERVICER_ONSCREEN' :
+            return { slideTo:'false' };
+            break;
+        default :
+            return state;
+    }
+}
+
 
 
 const userLog = combineReducers({
@@ -62,7 +97,9 @@ const userLog = combineReducers({
     disconnect,
     getUserDatas,
     getListeCates,
-    getListeUsersFound
+    getListeUsersFound,
+    selectedServicer,
+    requestToSlideToServicer
 })
 
 

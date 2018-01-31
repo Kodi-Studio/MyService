@@ -7,7 +7,7 @@ import { initUser } from '../store/action';
 import { map } from 'react-redux';
 
 class HomeScreen extends React.Component {
-    
+      
       constructor(props) {
           super(props);
       }

@@ -31,9 +31,10 @@ class Login extends React.Component {
           console.log('Datas user : '+responseJson.userDatas);
           console.log('Cates parentes : '+responseJson.catesParent);
           console.log('Cates : '+responseJson.cates);
-          this.props.confirmLogged( responseJson.logged );
           this.props.confirmUser( responseJson.userDatas );
           this.props.confirmListeCates( responseJson.catesParent , responseJson.cates );
+          this.props.confirmLogged( responseJson.logged );
+          
           return; // responseJson.logged;
       })
       .catch((error) => {

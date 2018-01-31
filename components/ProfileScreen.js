@@ -4,6 +4,15 @@ import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBa
 
 
 class ProfileScreen extends React.Component {
+    static navigationOptions = {
+        title : 'Profil',
+        tabBarIcon: () => (
+            <Image
+                source={require('../assets/pictos/avatar.png')}
+                style={[styles.iconTabNav]}
+            />
+            ),
+    }
     
       constructor(props) {
           super(props);

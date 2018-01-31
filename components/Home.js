@@ -4,7 +4,7 @@ import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBa
 import styles from '../styles/globalStyles';
 
 import HomeScreen from '../components/HomeScreen';
-import ProfileScreen from '../components/ProfileScreen';
+import ProfileScreen from '../components/profileScreen';
 
 /*import {  StackNavigator } from 'react-navigation';
 const App = StackNavigator({
@@ -19,14 +19,22 @@ import { map } from 'react-redux';
 
 
 class Home extends React.Component {
+      static navigationOptions = {
+        title : 'Messages',
+        header: true,
+        tabBarIcon: () => (
+            <Image
+              source={require('../assets/pictos/chat.png')}
+              style={[styles.iconTabNav]}
+            />
+          ),
+      }
     
       constructor(props) {
           super(props);
           this.state = store.getState();
       }
-      static navigationOptions = {
-        header: null
-      };
+
       test() {
         console.log(this.props);
         console.log(store.getState());

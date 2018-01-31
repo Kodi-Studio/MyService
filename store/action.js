@@ -22,7 +22,7 @@ export const actionDisconnect = (disconnect) => {
 
 export const initListeCates = (catesParent , cates) => {
     return  {
-        type: "INIT_CATES",
+        type: "INITCATES",
         catesParent,
         cates
     }
@@ -35,4 +35,24 @@ export const initUserListe = (liste) => {
         liste
     }
 
+}
+
+export const initSelectedServicer = (datas) => {
+    return  {
+        type: "INIT_SELECTED_SERVICER",
+        datas
+    }
+}
+
+export const requestToShowServicer = () => {
+    return  {
+        type: "REQUEST_SLIDE_TO_SERVICER_ONSCREEN"
+    }
+}
+
+
+export const confirmShowServicer = () => {
+    return  {
+        type: "SERVICER_ONSCREEN"
+    }
 }
