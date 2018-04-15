@@ -90,6 +90,56 @@ const requestToSlideToServicer = ( state = { } , action) => {
     }
 }
 
+const demandeDate = ( state = { "dateString": "",  "day": '', "month": '',"timestamp": '',"year": '' } , action) => {
+    switch (action.type) {
+        case 'INIT_DATE_DEMANDE' :
+            return { date:action.objDate};
+            break;
+        default :
+            return state;
+    }
+}
+
+
+const requestToSlideToDemandeDetails = ( state = { } , action) => {
+    switch (action.type) {
+        case 'NAVTO_DEMANDES' :
+            return { slideTo:'true', idDemande:action.id };
+            break;
+        case 'DEMANDEDETAILS_ONSCREEN' :
+            return { slideTo:'false' };
+            break;
+        default :
+            return state;
+    }
+}
+
+
+const getDemandeDetailsSelected = ( state = { datas:{} } , action) => {
+    switch (action.type) {
+        case 'INIT_DEMANDE_DETAILS' :
+            return { datas:action.datas };
+            break;
+        default :
+            return state;
+    }
+}
+
+const listeDemandes = ( state= { "LISTE_DEMANDES":"EMPTY" }, action  ) => {
+
+
+    switch (action.type) {
+        case 'GET_LISTE' :
+            return action.datas
+            break;
+        default : 
+            return state
+        }
+}
+
+
+
+
 
 
 const userLog = combineReducers({
@@ -99,9 +149,12 @@ const userLog = combineReducers({
     getListeCates,
     getListeUsersFound,
     selectedServicer,
-    requestToSlideToServicer
+    requestToSlideToServicer,
+    demandeDate,
+    requestToSlideToDemandeDetails,
+    getDemandeDetailsSelected,
+    listeDemandes
 })
-
 
 //let store = createStore(userLog);
 

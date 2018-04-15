@@ -77,11 +77,11 @@ export default styles = StyleSheet.create({
 
       /* inputsText*/
       textInputStyle: {
-        height:50,
+        height:40,
         width: '100%',
         /*backgroundColor: 'rgba(255, 255, 255, 1)',*/
         fontSize: 22,
-        lineHeight:50,
+        lineHeight:40,
         textAlign: "left",
         justifyContent: 'center',
         alignItems: "stretch",
@@ -166,6 +166,11 @@ export default styles = StyleSheet.create({
         height:70,
         borderRadius: 35
       },
+      listeAvatarSmall : {
+        width:50,
+        height:50,
+        borderRadius: 25
+      },
       listeRow: {
         flex:1,
         flexDirection: "row",
@@ -233,7 +238,14 @@ export default styles = StyleSheet.create({
         paddingVertical: 8,
       },
       sRowLesTopBorder: {
+        borderTopWidth: 0,
+      },
+      sRowLesBottomBorder: {
         borderBottomWidth: 0,
+      },
+      sRowTopBorderOrange: {
+        borderTopWidth: 2,
+        borderTopColor: orange
       },
       sFlexCol: {
         flex:1,
@@ -254,6 +266,10 @@ export default styles = StyleSheet.create({
         color: orange,
         fontSize: 15,
         width: "50%"
+      },
+      BigTitle: {
+        fontSize: 18,
+        textAlign: 'center'
       },
       sLabelLarge: {
         fontWeight: 'bold',
@@ -280,9 +296,42 @@ export default styles = StyleSheet.create({
       sLegend: {
         fontSize: 12,
         color: grey
+      },
+      iconArrowRightCenter: {
+       
+
+      },
+      messageFrom: {
+        backgroundColor:orange,
+        padding:0 ,
+        
+        borderRadius: 12,
+        marginTop: 5,
+        marginHorizontal: 15,
+        width: '90%'
+      },
+      messageTo: {
+       /* backgroundColor:'#FFFFFF',
+        padding: 20 ,
+        borderRadius: 12,
+        borderWidth: 0,
+        borderColor: orange,
+        marginTop: 5,
+        marginLeft:30,
+        marginRight: 15*/
+      },
+      messageTextWhite: {
+        color: "#ffffff" , fontSize: 16
+      },
+      messageTextOrange: {
+        color: orange , fontSize: 16,
+      },
+      messageTime: {
+        textAlign: "center",
+        color: grey,
+        marginTop: 12,
+        marginBottom: 6
       }
-
-
 
   });
   

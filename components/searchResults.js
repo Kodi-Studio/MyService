@@ -3,10 +3,12 @@ import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ListVie
 
 import styles from '../styles/globalStyles';
 
+import { connect } from 'react-redux';
+import { initDateDemande } from '../store/action';
+
 import UserRow from '../components/user/userRow';
 
-
-export default class SearchResults extends React.Component {
+class SearchResults extends React.Component {
     
       static navigationOptions = {
         title : 'Résultats',
@@ -25,7 +27,14 @@ export default class SearchResults extends React.Component {
           report: ds.cloneWithRows(store.getState().getListeUsersFound.listeUsers),
         };
       }
-      render(){ 
+
+      componentDidMount(){
+        this.props.removeDemand();
+      }
+      
+      render(){
+
+       
 
         return (
 
@@ -40,7 +49,7 @@ export default class SearchResults extends React.Component {
 
       };
 }
-/*
+
 const mapSateToProps = (state) => {
     return {
       login: state.login,
@@ -50,12 +59,10 @@ const mapSateToProps = (state) => {
   const mapDispatchToProps = (dispatch) => {
   
     return {
-      sendResult: (liste) => {
-        dispatch( initUserListe(liste) ) ;
+      removeDemand: () => {
+        dispatch( initDateDemande({},null) ) ;
       }  
     }
   }
   
-  export default connect (mapSateToProps , mapDispatchToProps)(SearchHome);
-//export default SearchHome;
-*/
+  export default connect (mapSateToProps , mapDispatchToProps)(SearchResults);

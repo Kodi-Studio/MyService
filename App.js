@@ -4,8 +4,12 @@ import { StyleSheet, Text, View, ActivityIndicator, ImageBackground, StatusBar }
 import styles from './styles/globalStyles';
 /// components views
 import Login from './components/Login';
-import Home from './components/Home';
-import ProfileScreen from './components/profileScreen';
+import ProfileScreen from './components/ProfileScreen';
+
+///// partie demande messagerie
+import DemandesPrestas from './components/prestations/DemandesPrestas';
+import DemandeDetails from './components/prestations/DemandeDetails';
+import Messagerie from './components/prestations/Messagerie';
 
 ///// partie recherche
 import SearchHome from './components/searchHome.js';
@@ -28,9 +32,19 @@ const SearchNav = StackNavigator({
 header: true
 });
 
+const MassagesNav = StackNavigator({
+  MessagesHome: { screen: DemandesPrestas},
+  MessagesPresta: { screen:Messagerie  },
+  DemandesDetails: { screen:DemandeDetails  },
+},{
+header: true
+});
+
+
+
 ///// tab bar navigation :
 const App = TabNavigator({
-  Message: { screen: Home },
+  DemandesPrestas: { screen: MassagesNav },
   Profile: { screen:ProfileScreen },
   Search: { screen:SearchNav }
 },{

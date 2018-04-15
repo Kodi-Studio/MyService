@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image, Picker, Modal, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image, Picker, Modal, ActivityIndicator,KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import { connect } from 'react-redux';
 import { initUserListe, confirmShowServicer } from '../store/action';
@@ -41,13 +41,20 @@ class SearchHome extends React.Component {
             cateSelected : false,
 
             waitWs : false,
-            found : false
+            found : false,
+
+            latitude: '',
+            longitude: '',
+            cp: ''
         };
         store.subscribe(() => {
             this.testSlideToServicer();
         });
 
     }
+
+  
+
     testSlideToServicer() {
         /// on sruveille selectedServicer du store pour savoir si on doit slider vers la vue du servicer
         /// l'initialisation se fait dans userRow
@@ -58,15 +65,67 @@ class SearchHome extends React.Component {
         }
     }
 
-
     componentDidMount() {
 
        this.setState({selectedCateParentId:store.getState().getListeCates.catesParent[0].id } );
-      /* console.log('-----------------------------------------------');
-       console.log( store.getState().getListeCates.catesParent[0] );
-       console.log('-----------------------------------------------');*/
-        //console.log(this.state.catesParent);
+
+       navigator.geolocation.getCurrentPosition(
+         (position) => {
+
+           this.getCP( position.coords.latitude , position.coords.longitude )
+
+           this.setState({
+             latitude: position.coords.latitude,
+             longitude: position.coords.longitude,
+             error: null,
+           });
+         },
+         (error) => this.setState({ error: error.message }),
+         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+       );
     }
+    getCP(lat, lg ) {
+
+        return fetch( "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lg+"&sensor=false&key=AIzaSyAFDOpw0q2IFJ0elwgAnLpQAH2vSWGFprY" , {
+            method : 'GET', 
+            headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" }
+            }
+            )
+            .then((response) => response.json())
+            .then((responseJson) => {
+               this.setState({cp:responseJson.results[2].address_components[0].long_name})
+            })
+            .catch((error) => {
+            // console.error(error);
+            return false;
+        });
+    }
+
+    setLatLg(cp){
+         return fetch( "https://maps.googleapis.com/maps/api/geocode/json?address="+cp+"%20france&sensor=false&key=AIzaSyAFDOpw0q2IFJ0elwgAnLpQAH2vSWGFprY" , {
+            method : 'GET', 
+            headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" }
+            }
+            )
+            .then((response) => response.json())
+            .then((responseJson) => {
+               this.setState({latitude:responseJson.results[0].geometry.location.lat  , longitude:responseJson.results[0].geometry.location.lng })
+            })
+            .catch((error) => {
+            return false;
+        });
+    }
+
+
+    initTipedCp( tipedCp ){
+        console.log(tipedCp);
+        this.setState({cp:tipedCp.cp});
+        if(tipedCp.cp.length==5){
+            this.refs.InputCp.blur();
+            this.setLatLg(tipedCp.cp);
+        }
+    }
+
     onChangeCateParent(value,index) {
         this.setState({selectedCateParentId:value , selectedCateParentLabel: this.state.getListeCates.catesParent[index].mscat_libelle });
     }
@@ -91,33 +150,34 @@ class SearchHome extends React.Component {
         this.closeModalCates();
     }
     showResults(){
-        if(this.state.cateParentSelected != false){
-                 console.log( "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId );
-        //////// requete web service ->liste de résultats
-        this.setState({'waitWs':true});
-        return fetch( 'https://www.myservice-collaboratif.com/app/servicerListe.php' , {
-            method : 'POST', 
-            headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" },
-            body: "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId
-              }
-            )
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({'waitWs':false});
-                if( responseJson.USER_LISTE.length > 0 ) {
-                    this.props.sendResult(responseJson.USER_LISTE)
-                    this.props.navigation.navigate('SearchResults');
-                }else{
-                    alert("Nous n'avons trouvé aucun servicer :-/");
+        if(this.state.cateParentSelected != false && this.state.cp != ''){
+        //console.log( "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId );
+            //////// requete web service ->liste de résultats
+            this.setState({'waitWs':true});
+            return fetch( 'https://www.myservice-collaboratif.com/app/servicerListe.php' , {
+                method : 'POST', 
+                headers: { Accept: "application/json"  , "Content-type" : "application/x-www-form-urlencoded; charset=UTF-8" },
+                body: "selectedCateParentId="+this.state.selectedCateParentId+"&selectedCateId="+this.state.selectedCateId+"&cp="+this.state.cp+"&lat="+this.state.latitude+"&lng="+this.state.longitude
                 }
-                return; // responseJson.logged;
-            })
-            .catch((error) => {
-              // console.error(error);
-              return false;
+                )
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({waitWs:false});
+                    if( responseJson.USER_LISTE.length > 0 ) {
+                        this.props.sendResult(responseJson.USER_LISTE)
+                        this.props.navigation.navigate('SearchResults');
+                    }else{
+                        setTimeout(function(){ alert("Nous n'avons trouvé aucun servicer :-/") },300)
+                        
+                    }
+                    return; // responseJson.logged;
+                })
+                .catch((error) => {
+                // console.error(error);
+                return false;
             });
         }else{
-            alert('Vous devez choisir une catégorie.');
+            alert('Vous devez choisir une catégorie et renseigner un code postal.');
         }
    
     }
@@ -130,25 +190,18 @@ class SearchHome extends React.Component {
         
         
                     if(this.state.cateParentSelected==true && this.state.found == false ) var libelleAffinerRecherche = 
-                        <View style={styles.textInputStyleWrapper}>
-                            <Text style={styles.titleLabel} >Sous-catégorie :</Text>
-                            <Text  style={styles.textInputStyle}  onPress={()=>this.setState({modalCatesVisible:true})}  >{this.state.selectedCateLabel}</Text>
-                        </View>;
+                       
+                            <View style={styles.textInputStyleWrapper}>
+                                <Text style={styles.titleLabel} >Sous-catégorie :</Text>
+                                <Text  style={styles.textInputStyle}  onPress={()=>this.setState({modalCatesVisible:true})}  >{this.state.selectedCateLabel}</Text>
+                            </View>;
                     else var libelleAffinerRecherche = null;
 
-                    var spinner  ;
-                    switch(this.state.waitWs){
-                    case true:
-                        spinner = <View style={styles.container} ><ActivityIndicator size="large" color="#ea654c" /></View>;
-                        libelleAffinerRecherche = null;
-                        break
-                    case false:
-                        spinner= null
-                        break
-                    }
-                                
                         return (
-                            
+                            <KeyboardAvoidingView
+                                behavior="position"
+                            >
+                            <ScrollView style={{paddingTop:50}} >
                             <View ref="myRef" style={styles.container} >
                                 <View style={styles.largeView70} >
                                     <Text style={styles.titleSearch}>Trouver un servicer</Text>
@@ -183,6 +236,12 @@ class SearchHome extends React.Component {
                                     { /* END modale de sélection de catégorie parent */ }
                                     {libelleAffinerRecherche}
                                     { /* modale de sélection de catégorie  */ }
+                                    { /* Code postal  */ }
+                                    <View style={styles.textInputStyleWrapper}>
+                                        <Text style={styles.titleLabel} >Localisation (Code postal) :</Text>
+                                        <TextInput ref="InputCp" keyboardType={'numeric'}  style={styles.textInputStyle} maxLength={5} value={this.state.cp} editable={true} onChangeText= {(cp) => this.initTipedCp({cp})} />
+                                    </View>
+                                    { /* Code postal  */ }
                                     <Modal
                                         visible={this.state.modalCatesVisible}
                                         animationType={'slide'}
@@ -207,8 +266,20 @@ class SearchHome extends React.Component {
                                         </View>
                                     </Modal>
                                     { /* END modale de sélection de catégorie  */ }
-                                    <View>{spinner}</View>
                                     
+                                    <Modal
+                                        visible={this.state.waitWs}
+                                        animationType={'slide'}
+                                        onRequestClose={() => this.closeModal()}
+                                    >
+                                        <View style={styles.container}>
+                                            <View  style={styles.titleModal}  >
+                                                <Text style={styles.titleModaltext} >Recherche....</Text>
+                                                <View style={{paddingTop:30}} ><ActivityIndicator size="large" color="#ea654c" /></View>
+                                            </View>
+                                            
+                                        </View>
+                                    </Modal>
                                     <TouchableHighlight  style={styles.buttonOrange}  onPress={()=>this.showResults()} >
                                             <Text style={styles.buttonText} > Trouver </Text>
                                     </TouchableHighlight>
@@ -217,6 +288,8 @@ class SearchHome extends React.Component {
                                 </View>
                                     
                             </View>
+                            </ScrollView>
+                            </KeyboardAvoidingView>
                         
 
                     );

@@ -50,9 +50,42 @@ export const requestToShowServicer = () => {
     }
 }
 
-
+export const initDateDemande = (objDate) => {
+    return  {
+        type: "INIT_DATE_DEMANDE",
+        objDate
+    }
+}
 export const confirmShowServicer = () => {
     return  {
         type: "SERVICER_ONSCREEN"
+    }
+}
+
+
+export const navToDemandeDetails = (id,messages) => {
+    return  {
+        type: "NAVTO_DEMANDES",
+    }
+}
+
+export const confirmShowDemandedetails = () => {
+    return  {
+        type: "DEMANDEDETAILS_ONSCREEN"
+    }
+}
+
+
+export const getListeDemandes = (datas) => {
+    return  {
+        type: "GET_LISTE",
+        datas
+    }
+}
+
+export const initDatasDemandesToView = (datas) => {
+    return  {
+        type: "INIT_DEMANDE_DETAILS",
+        datas
     }
 }

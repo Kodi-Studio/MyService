@@ -58,7 +58,7 @@ export default class realCarrousel extends React.Component {
                     easing: Easing.in(),
                     useNativeDriver: true
                 }
-            ).start()
+            ).start();
         }
 
 
@@ -98,6 +98,7 @@ export default class realCarrousel extends React.Component {
                 flexDirection: 'row',
                 width: this.state.width*this.state.nb,
                 height: 200,
+                marginBottom: 12,
                 overflow:'hidden',
                 transform: [{
                     translateX: this.state.translate

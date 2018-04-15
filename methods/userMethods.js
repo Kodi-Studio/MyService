@@ -5,11 +5,14 @@ import styles from '../styles/globalStyles';
 
 export class jsxUser  {
 
-    constructor (){
+    constructor (size){
         this.img = '';
+        this.size = size;
     }
+   
 
     jsxAvatar(path , sexe, avatar){
+        let styleImgAvatar = (()=>this.size=='small')? styles.listeAvatarSmall : styles.listeAvatar ;
         this.path = path;
         this.sexe = sexe;
         this.avatar =  avatar;
@@ -18,16 +21,16 @@ export class jsxUser  {
             switch (this.sexe){
                 case 'f':
                 imgPath = this.path+'assets/avatar_femme.jpg';
-                this.img = <Image style={styles.listeAvatar} source={require('../assets/avatar_femme.jpg')} />;
+                this.img = <Image style={styleImgAvatar} source={require('../assets/avatar_femme.jpg')} />;
                 break;
                 case 'h':
                 imgPath = this.path+'assets/avatar_homme.jpg';
-                this.img = <Image style={styles.listeAvatar} source={require('../assets/avatar_homme.jpg')} />;
+                this.img = <Image style={styleImgAvatar} source={require('../assets/avatar_homme.jpg')} />;
                 break;
             }
         }else{
             var url = this.avatar;
-            this.img = <Image style={styles.listeAvatar} source={{uri:url}} />;
+            this.img = <Image style={styleImgAvatar} source={{uri:url}} />;
         }
         return this.img;
 

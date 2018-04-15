@@ -4,7 +4,7 @@ import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBa
 import styles from '../styles/globalStyles';
 
 import HomeScreen from '../components/HomeScreen';
-import ProfileScreen from '../components/profileScreen';
+import ProfileScreen from '../components/ProfileScreen';
 
 /*import {  StackNavigator } from 'react-navigation';
 const App = StackNavigator({
@@ -37,7 +37,8 @@ class Home extends React.Component {
 
       test() {
         console.log(this.props);
-        console.log(store.getState());
+        //console.log(store.getState());
+        console.log( JSON.parse(this.state.datas.booked) );
         //this.props.confirmLogged( 'false' );
         this.props.navigation.navigate('Profile') 
       }
