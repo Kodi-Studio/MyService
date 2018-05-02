@@ -41,17 +41,18 @@ class Messagerie extends React.Component {
       }
 
       componentDidMount () {
-       
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);       
       }
 
       componentWillMount () {
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.hideKeybord );
+       // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.hideKeybord );
         this.setState({user:this.props.datas.user});
         //this.scrollToBottom();
         //this.scroll.props.scrollToPosition(0, 100)
       }
       componentWillUnmount () {
-        this.keyboardDidHideListener.remove();
+       // this.keyboardDidHideListener.remove();
       }
       confirmSendMessage() {
         if(this.state.newMessage!=''){
@@ -75,7 +76,7 @@ class Messagerie extends React.Component {
       sendMessage(){
         let myMessage = this.state.newMessage;
         this.setState({newMessage:'', peddingSendMessage: true});
-        let dem = this.state.user//this.props.datas.user;
+        let dem = this.state.user;//this.props.datas.user;
             ///// definition du destinataire
             let idDest;
             (dem.idClient == this.props.me.id) ? idDest = dem.idPrestataire : idDest = dem.idClient;
@@ -95,26 +96,19 @@ class Messagerie extends React.Component {
                 .then((response) => response.json())
                 .then((responseJson) => {
                   console.log('-----------');
-                   console.log(responseJson.DETAILS);
+                  console.log(responseJson.DETAILS);
                   if(responseJson.DETAILS!="ERROR"){
-                     //console.log(this.state.user);
-                      
-                      //console.log( store.getState().getUserDatas.userDatas.id )
-
-                      initListeDemandesInStore(this , store.getState().getUserDatas.userDatas.id );
-                      this.setState({user:responseJson.DETAILS[0]});
-
-                      //alert( this.state.user.index );
-                      //console.log(store.getState().listeDemandes.LISTE_DEMANDES[this.state.user.index])
-
-                      this.setState({peddingSendMessage: false });
-                       
-                        
-                        ///// mise a jour du store
-
-                    }else{
-                      alert('Une erreur c\'est produite. Veuillez réessayez plus tard.');
-                    }
+                    //console.log(this.state.user);
+                    //console.log( store.getState().getUserDatas.userDatas.id )
+                    initListeDemandesInStore(this , store.getState().getUserDatas.userDatas.id );
+                    this.setState({user:responseJson.DETAILS[0]});
+                    //alert( this.state.user.index );
+                    //console.log(store.getState().listeDemandes.LISTE_DEMANDES[this.state.user.index])
+                    this.setState({peddingSendMessage: false });
+                    ///// mise a jour du store
+                  }else{
+                    alert('Une erreur c\'est produite. Veuillez réessayez plus tard.');
+                  }
                 })
                 .catch((error) => {
                 // console.error(error);
@@ -123,80 +117,82 @@ class Messagerie extends React.Component {
             
       }
 
-      scrollToBottom(){
-       //console.log(this.refs._scrollView.height);
-        /// () => { this.refs._scrollView.scrollTo({x:0 , y:200, animated:true}); } 
-        let Y =  this.state.footerY-Dimensions.get('window').height;
-        //if(  this.state.footerY>this.state.windowHeight ) Y = this.state.footerY+this.state.windowHeight
-        this.refs._mainScroll.scrollTo({x:0 , y:Y, animated:true});
-
+      scrollToBottom(anim){
+        this.refs._mainScroll.scrollToEnd({animated: anim});
       }
       onLayout(event) {
-        const layout = event.nativeEvent.layout
-        //  alert(layout.height);
-        let h = this.state.footerY + layout.height;
-        let nM = this.state.nbMessagesRendered+1;
-        this.setState({footerY:h , nbMessagesRendered:nM});
-        console.log( this.state.nbMessagesRendered+'  '+this.state.user.messages.length   );
-        if(this.state.nbMessagesRendered+1==this.state.user.messages.length  ) this.scrollToBottom();
-        //  this.test();
+        this.scrollToBottom(false);
       }
-     
+
+
+      _keyboardDidShow () {
+        //alert('Keyboard Shown');
+        var {height, width} = Dimensions.get('window');
+        console.log(  Dimensions.get('window') );
+      }
+    
+      _keyboardDidHide () {
+        // alert('Keyboard Hidden');
+        console.log('fermeture :');
+        console.log(  Dimensions.get('window') );
+      }
+
       render(){ 
 
-       
         return (
-
+          <View>
+            <View style={{height:50}} >
+              <Button title="Voir les détails de la prestation >" onPress={()=>this.scrollToBottom()} />
+            </View> 
             <KeyboardAvoidingView
-                behavior="position"
-                style={{flexDirection:'column', flex:1, justifyContent: "space-between", borderWidth:4, borderColor:'#cc0000', width:'100%'}} 
-                >
-             
-                <View>
-                  <Button title="Voir les détails de la prestation >" onPress={()=>this.scrollToBottom()} />
-                </View>
-                <ScrollView ref="_mainScroll" style={{borderWidth:3, width:'100%', borderColor:"green", height:'60%'}}  > 
-                      
-                      
-                        <View style={{padding:0}} style={{borderWidth:3, flex:3}}  >
-                          { (this.state.user.messages.map((item, key) => (
-                            (item.editor != this.props.me.id) ?
-                            <View key={key}  onLayout={this.onLayout} style={{borderWidth:3}}  >
-                              <Text style={styles.messageTime} >{timestampToString( item.dateEdit , 1  )}</Text>
-                              <View style={[styles.messageFrom, {'borderWidth':3}]} >
-                                <Text style={styles.messageTextWhite} >{item.message}</Text>
-                              </View>
-                            </View>
-                            : <View key={key} onLayout={this.onLayout}   ><Text style={styles.messageTime}>{timestampToString( item.dateEdit , 1  )}</Text><View style={styles.messageTo} ><Text style={styles.messageTexteOrange} >{item.message}</Text></View></View>
-
-                          )) ) }
-                        
-
-                        </View>
-                      
-                        {(this.state.peddingSendMessage== true) ? 
-                                  <View style={{paddingTop:30}} ><ActivityIndicator size="small" color="#ea654c" /></View>
-                                  : <View></View>
-                            }
-                </ScrollView>
-                <View>
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "space-between" }} >
-                        <View><Text style={styles.titleLabel} >Nouveau message :</Text></View>
-                        <View><Button  title="Envoyer" onPress={ () =>this.confirmSendMessage() } /></View>
+            behavior="position"
+            style={{/*flexDirection:'column', /*flex:1, justifyContent: "space-between",*/ height:468, width:'100%'}}
+            enabled="true"
+            >
+       
+          
+            <ScrollView ref="_mainScroll" style={{ width:'100%', height:"100%",  paddingBottom:0}}  >                
+              <View style={{padding:0}} style={{ marginBottom:190 }}  >
+                { (this.state.user.messages.map((item, key) => (
+                  (item.editor != this.props.me.id) ?
+                  <View key={key}  onLayout={this.onLayout}   >
+                    <Text style={styles.messageTime} >{timestampToString( item.dateEdit , 1  )}</Text>
+                    <View style={[styles.messageFrom]} >
+                      <Text style={styles.messageTextWhite} >{item.message}</Text>
                     </View>
-                    <TextInput style={{borderWidth:0, width:'100%', height:100, marginBottom:0, marginTop:15, paddingHorizontal:10, fontSize:22, backgroundColor:'#FFFFFF'}}
-                        editable = {true}
-                        multiline= {true}
-                        maxLength = {250}
-                        placeholder = "Votre message..."
-                        value={this.state.newMessage}
-                        onChangeText={(newMessage) => this.setState({newMessage})}
-                        ref={(r) => { this._textInputRef = r; }}
-                        />
-                </View>
-             
+                  </View>
+                  : <View key={key} onLayout={this.onLayout}   >
+                      <Text style={styles.messageTime}>{timestampToString( item.dateEdit , 1  )}</Text>
+                      <View style={styles.messageTo} ><Text style={styles.messageTexteOrange} >{item.message}</Text></View>
+                    </View>
+
+                )) ) }
+                {(this.state.peddingSendMessage === true) ? 
+                  <View style={{paddingTop:30}}   onLayout={()=>this.scrollToBottom(true)}    ><ActivityIndicator size="small" color="#ea654c" /></View>
+                  : <View></View>
+                }
+              </View>
+            </ScrollView>
+            <View style={{position:"absolute", width:"100%", bottom:50, height:130 ,  backgroundColor:'#FFFFFF'}} >
+              <View style={{/*flex:1,*/ flexDirection: "row", justifyContent: "space-between", borderColor:"#cc0000", height:40, padding:6 }} >
+                  <View><Text style={styles.titleLabel} >Nouveau message :</Text></View>
+                  <View><View style={styles.btnOrangeSmall}><Text onPress={() => this.sendMessage()} style={styles.btnOrangeTxt}>Envoyer</Text></View></View>
+              </View>
+              <View>
+                <TextInput style={{borderWidth:0, height:90, width:'100%', marginBottom:0, marginTop:0, paddingHorizontal:10, fontSize:22 }}
+                  editable = {true}
+                  multiline= {true}
+                  maxLength = {250}
+                  placeholder = "Votre message..."
+                  value={this.state.newMessage}
+                  onChangeText={(newMessage) => this.setState({newMessage})}
+                  ref={(r) => { this._textInputRef = r; }}
+                  spellCheck = {false}
+                  />
+              </View>
+            </View>
             </KeyboardAvoidingView>
-  
+          </View>
         );
       };
 }
@@ -231,7 +227,62 @@ export default connect (mapSateToProps , mapDispatchToProps)(Messagerie);
 
 /*
 
+<Button  title="Envoyer" onPress={ () =>this.confirmSendMessage() } />
+
+ <KeyboardAvoidingView
+                behavior="position"
+                style={{flexDirection:'column', flex:1, justifyContent: "space-between", borderWidth:4, borderColor:'#cc0000', width:'100%'}} 
+                >
+             
+                <View>
+                  <Button title="Voir les détails de la prestation >" onPress={()=>this.scrollToBottom()} />
+                </View>
+                <ScrollView ref="_mainScroll" style={{borderWidth:3, width:'100%', borderColor:"green", height:'60%'}}  > 
+                      
+                      
+                        <View style={{padding:0}} style={{borderWidth:3, flex:3}}  >
+                          { (this.state.user.messages.map((item, key) => (
+                            (item.editor != this.props.me.id) ?
+                            <View key={key}  onLayout={this.onLayout} style={{borderWidth:3}}  >
+                              <Text style={styles.messageTime} >{timestampToString( item.dateEdit , 1  )}</Text>
+                              <View style={[styles.messageFrom, {'borderWidth':3}]} >
+                                <Text style={styles.messageTextWhite} >{item.message}</Text>
+                              </View>
+                            </View>
+                            : <View key={key} onLayout={this.onLayout}   ><Text style={styles.messageTime}>{timestampToString( item.dateEdit , 1  )}</Text><View style={styles.messageTo} ><Text style={styles.messageTexteOrange} >{item.message}</Text></View></View>
+
+                          )) ) }
+                        
+
+                        </View>
+                      
+                        {(this.state.peddingSendMessage== true) ? 
+                                  <View style={{paddingTop:30}} ><ActivityIndicator size="small" color="#ea654c" /></View>
+                                  : <View></View>
+                            }
+                </ScrollView>
+                
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", borderWidth:1, borderColor:"#cc0000" }} >
+                        <View><Text style={styles.titleLabel} >Nouveau message :</Text></View>
+                        <View><Text>Envoyer</Text></View>
+                    </View>
+                    <View style={{flex:1,  borderWidth:5, borderColor:"#000000", height:80 }} >
+                      <TextInput style={{borderWidth:0, width:'100%', height:100, marginBottom:0, marginTop:15, paddingHorizontal:10, fontSize:22, backgroundColor:'#FFFFFF'}}
+                          editable = {true}
+                          multiline= {true}
+                          maxLength = {250}
+                          placeholder = "Votre message..."
+                          value={this.state.newMessage}
+                          onChangeText={(newMessage) => this.setState({newMessage})}
+                          ref={(r) => { this._textInputRef = r; }}
+                          />
+                    </View>
+                    <View style={{borderWidth:1, width:'100%', height:100, position:"absolute", bottom:0, backgroundColor:'#cc0000'}}
+                      
+                      >
 
 
-
+                    </View>
+             
+            </KeyboardAvoidingView>
 */

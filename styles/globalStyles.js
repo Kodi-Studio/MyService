@@ -146,6 +146,7 @@ export default styles = StyleSheet.create({
         textAlign:'left',
         fontSize:20,
         color: grey,
+        paddingVertical:5
       },
       ////////////////// NAV principale
       iconTabNav : {
@@ -303,22 +304,25 @@ export default styles = StyleSheet.create({
       },
       messageFrom: {
         backgroundColor:orange,
-        padding:0 ,
-        
+        padding:20 ,
+        borderWidth: 0,
         borderRadius: 12,
         marginTop: 5,
         marginHorizontal: 15,
-        width: '90%'
+        marginLeft:"5%",
+        marginRight: "20%",
+        width: '80%'
       },
       messageTo: {
-       /* backgroundColor:'#FFFFFF',
+        backgroundColor:'#FFFFFF',
         padding: 20 ,
         borderRadius: 12,
         borderWidth: 0,
         borderColor: orange,
         marginTop: 5,
-        marginLeft:30,
-        marginRight: 15*/
+        marginLeft:"15%",
+        marginRight: "5%",
+        width: '80%'
       },
       messageTextWhite: {
         color: "#ffffff" , fontSize: 16
@@ -331,6 +335,16 @@ export default styles = StyleSheet.create({
         color: grey,
         marginTop: 12,
         marginBottom: 6
+      },
+      btnOrangeSmall: {
+        backgroundColor:orange,
+        paddingHorizontal:10,
+        paddingVertical:5,
+        borderRadius:15
+      },
+      btnOrangeTxt: {
+        color:"#fff",
+        fontSize:20,
       }
 
   });
