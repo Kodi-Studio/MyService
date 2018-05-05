@@ -9,7 +9,7 @@ import styles from '../../styles/globalStyles';
 import {timestampToString} from '../../methods/globalMethods'
 
 import { connect } from 'react-redux';
-import { initUser, getListeDemandes, initDatasDemandesToView } from '../../store/action';
+import { initUser, getListeDemandes, initDatasDemandesToView, getDevice } from '../../store/action';
 import { map } from 'react-redux';
 ///// SERVICES
 import { loadListeDemandes, initListeDemandesInStore } from '../services/services'
@@ -34,13 +34,21 @@ class Messagerie extends React.Component {
             user:'',
             footerY:800,
             nbMessagesRendered: 0,
-            windowHeight: Dimensions.get('window').height
+            windowHeight: Dimensions.get('window').height,
+            scrollViewHeight: 0
           }
           this.hideKeybord = () => (  this.confirmSendMessage()  )
           this.onLayout = this.onLayout.bind(this);
       }
 
       componentDidMount () {
+        this.props.defineDevice();
+        console.log( store.getState().getDeviceType.device );
+        let h = Dimensions.get('window').height;
+        let dif;
+        (store.getState().getDeviceType.device=='IphoneX') ? dif = 170 : dif = 100;
+        alert(dif);
+        this.setState({scrollViewHeight:h-dif});
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);       
       }
@@ -50,6 +58,7 @@ class Messagerie extends React.Component {
         this.setState({user:this.props.datas.user});
         //this.scrollToBottom();
         //this.scroll.props.scrollToPosition(0, 100)
+        
       }
       componentWillUnmount () {
        // this.keyboardDidHideListener.remove();
@@ -137,7 +146,9 @@ class Messagerie extends React.Component {
         console.log(  Dimensions.get('window') );
       }
 
-      render(){ 
+      render(){
+        //this.setState({scrollViewHeight:100});
+        //alert(this.state.scrollViewHeight);
 
         return (
           <View>
@@ -146,7 +157,7 @@ class Messagerie extends React.Component {
             </View> 
             <KeyboardAvoidingView
             behavior="position"
-            style={{/*flexDirection:'column', /*flex:1, justifyContent: "space-between",*/ height:468, width:'100%'}}
+            style={{/*flexDirection:'column', /*flex:1, justifyContent: "space-between",*/ height:this.state.scrollViewHeight, width:'100%'}}
             enabled="true"
             >
        
@@ -218,10 +229,15 @@ const mapDispatchToProps = (dispatch) => {
        dispatch( initDatasDemandesToView(d) );
        console.log(store.getState().getDemandeDetailsSelected.datas);
        ()=>this.setState({user:store.getState().getDemandeDetailsSelected.datas});*/
+      },
+      defineDevice: (datas) => {
+        dispatch( getDevice() );
       }
     }
   }
-  
+ 
+
+
 export default connect (mapSateToProps , mapDispatchToProps)(Messagerie);
 
 

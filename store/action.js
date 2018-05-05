@@ -1,3 +1,6 @@
+import { isIphoneX } from 'react-native-device-detection';
+
+
 export const initUserLogged = (logged) => {
     return{
         type: "LOGIN",
@@ -87,5 +90,16 @@ export const initDatasDemandesToView = (datas) => {
     return  {
         type: "INIT_DEMANDE_DETAILS",
         datas
+    }
+}
+
+export const getDevice = () => {
+
+    //// defincition du device
+    let detected;
+    (isIphoneX===true)? detected = "IphoneX"  : detected = "mobilePhone" ;
+    return {
+        type: "GET_DEVICE",
+        device:detected
     }
 }

@@ -23,6 +23,7 @@ import store from './store/index';
 
 import {  StackNavigator, TabNavigator } from 'react-navigation';
 
+
 ///// composants de navigation  ///////////////////////////////////////////////////////////////////////////////
 const SearchNav = StackNavigator({
   Search: { screen: SearchHome },
@@ -79,7 +80,6 @@ export default class myApp extends React.Component {
    
   }
 
-
   render() {
     var screen  ;
     switch(this.state.logged){
@@ -99,7 +99,7 @@ export default class myApp extends React.Component {
       <Provider store={store} >
         <View style={{'flex':1}} > 
            <StatusBar
-              hidden={true}
+              hidden={false}
             />
             {screen}
         </View>

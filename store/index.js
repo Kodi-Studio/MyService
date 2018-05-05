@@ -6,6 +6,9 @@ export const initialState = {
   pass:''
 }
 
+
+
+
 const loginActions = (state= {} , action) => {
      switch (action.type) {
         case 'LOGIN':
@@ -127,7 +130,6 @@ const getDemandeDetailsSelected = ( state = { datas:{} } , action) => {
 
 const listeDemandes = ( state= { "LISTE_DEMANDES":"EMPTY" }, action  ) => {
 
-
     switch (action.type) {
         case 'GET_LISTE' :
             return action.datas
@@ -136,7 +138,15 @@ const listeDemandes = ( state= { "LISTE_DEMANDES":"EMPTY" }, action  ) => {
             return state
         }
 }
-
+const getDeviceType = ( state = { } , action ) => {
+    switch (action.type) {
+        case 'GET_DEVICE' : 
+            return {device:action.device}
+            break;
+        default :
+            return 'inkonwn'
+    }
+}
 
 
 
@@ -153,7 +163,8 @@ const userLog = combineReducers({
     demandeDate,
     requestToSlideToDemandeDetails,
     getDemandeDetailsSelected,
-    listeDemandes
+    listeDemandes,
+    getDeviceType
 })
 
 //let store = createStore(userLog);
