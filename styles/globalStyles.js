@@ -16,6 +16,12 @@ export default styles = StyleSheet.create({
       width: '100%',
       height: '100%'
     },
+    headerStyle: {
+      backgroundColor: orange
+    },
+    headerTitleStyle: {
+      color:"#FFFFFF"
+    },
     headerHome: {
         backgroundColor:"#FFFFFF",
         height:'25%',

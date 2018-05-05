@@ -26,6 +26,9 @@ class ServicerScreen extends React.Component {
               style={[styles.iconTabNav]}
             />
           ),
+          headerStyle: styles.headerStyle,
+          headerTitleStyle: styles.headerTitleStyle,
+          headerTintColor: '#ffffff',
     }
     constructor(props) {
         super(props);

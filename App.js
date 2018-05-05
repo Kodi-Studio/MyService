@@ -95,7 +95,6 @@ export default class myApp extends React.Component {
     }
 
     return (
-
       <Provider store={store} >
         <View style={{'flex':1}} > 
            <StatusBar

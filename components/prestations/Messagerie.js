@@ -1,9 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View , TextInput, Button, TouchableHighlight, ImageBackground, Image, ScrollView, Keyboard, Alert, ActivityIndicator, Dimensions, KeyboardAvoidingView } from 'react-native';
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
-
-
 import styles from '../../styles/globalStyles';
 
 import {timestampToString} from '../../methods/globalMethods'
@@ -24,8 +21,10 @@ class Messagerie extends React.Component {
               style={[styles.iconTabNav]}
             />
           ),
+          headerStyle: styles.headerStyle,
+          headerTitleStyle: styles.headerTitleStyle,
+          headerTintColor: '#ffffff',
       }
-      
       constructor(props) {
           super(props);
           this.state= {
@@ -43,12 +42,9 @@ class Messagerie extends React.Component {
 
       componentDidMount () {
         this.props.defineDevice();
-        console.log( store.getState().getDeviceType.device );
         let h = Dimensions.get('window').height;
-        let dif;
-        (store.getState().getDeviceType.device=='IphoneX') ? dif = 170 : dif = 100;
-        alert(dif);
-        this.setState({scrollViewHeight:h-dif});
+        (store.getState().getDeviceType.device=='IphoneX') ? h -= 170 : h -= 100;
+        this.setState({scrollViewHeight:h});
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);       
       }
@@ -184,7 +180,7 @@ class Messagerie extends React.Component {
                 }
               </View>
             </ScrollView>
-            <View style={{position:"absolute", width:"100%", bottom:50, height:130 ,  backgroundColor:'#FFFFFF'}} >
+            <View style={{position:"absolute", width:"100%", bottom:50, height:130 , borderTopWidth:1, borderTopColor:"#c6c6c6",  backgroundColor:'#FFFFFF'}} >
               <View style={{/*flex:1,*/ flexDirection: "row", justifyContent: "space-between", borderColor:"#cc0000", height:40, padding:6 }} >
                   <View><Text style={styles.titleLabel} >Nouveau message :</Text></View>
                   <View><View style={styles.btnOrangeSmall}><Text onPress={() => this.sendMessage()} style={styles.btnOrangeTxt}>Envoyer</Text></View></View>
@@ -194,7 +190,7 @@ class Messagerie extends React.Component {
                   editable = {true}
                   multiline= {true}
                   maxLength = {250}
-                  placeholder = "Votre message..."
+                  placeholder = ""
                   value={this.state.newMessage}
                   onChangeText={(newMessage) => this.setState({newMessage})}
                   ref={(r) => { this._textInputRef = r; }}

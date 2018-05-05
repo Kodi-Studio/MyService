@@ -17,6 +17,7 @@ import UserFlatRow from './userFlatRow';
 
 const _renderItem = ({ item }) => <Text >{item.email}</Text>;
 
+
 class DemandesPrestas extends React.Component {
       static navigationOptions = {
         title : 'Demandes',
@@ -26,6 +27,8 @@ class DemandesPrestas extends React.Component {
               style={[styles.iconTabNav]}
             />
           ),
+          headerStyle: styles.headerStyle,
+          headerTitleStyle: styles.headerTitleStyle
       }
     
       constructor(props) {
