@@ -156,7 +156,8 @@ export default styles = StyleSheet.create({
       },
       ////////////////// NAV principale
       iconTabNav : {
-        tintColor: 'rgba(255, 255, 255, 0.9)',
+        /*tintColor: 'rgba(255, 255, 255, 0.9)',*/
+        tintColor: 'rgba(234, 101, 76, 1)',
         width:20, 
         height:20, 
         marginTop:3

@@ -55,12 +55,23 @@ const App = TabNavigator({
   tabBarOptions: {
     showLabel: true,
     activeBackgroundColor: '#dc4f35',
+    inactiveBackgroundColor: '#FFFFFF',
+    activeTintColor: '#FFFFFF',
+    inactiveTintColor: '#dc4f35',
+    /*labelStyle: {
+      color: "#dc4f35"
+    },*/
+    borderWidth: 0    
+  }
+  /*tabBarOptions: {
+    showLabel: true,
+    activeBackgroundColor: '#dc4f35',
     inactiveBackgroundColor: 'rgba(234, 101, 76, 1)',
     labelStyle: {
       color: "#FFFFFF"
     },
     borderWidth: 0    
-  }
+  }*/
 
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
