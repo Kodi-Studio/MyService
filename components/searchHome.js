@@ -231,7 +231,7 @@ class SearchHome extends React.Component {
                                         <View style={styles.container}>
                                             <View style={styles.largeView70} >
                                                 <TouchableHighlight  style={styles.buttonOrange}  onPress={()=>this.selectParentCates()} >
-                                                    <Text style={styles.buttonText} > Sélectionner </Text>
+                                                    <Text style={styles.buttonTextWhite} > Sélectionner </Text>
                                                 </TouchableHighlight>
                                             </View>
                                         </View>
@@ -263,7 +263,7 @@ class SearchHome extends React.Component {
                                         <View style={styles.container}>
                                             <View style={styles.largeView70} >
                                                 <TouchableHighlight  style={styles.buttonOrange}  onPress={()=>this.selectCates()} >
-                                                    <Text style={styles.buttonText} > Sélectionner </Text>
+                                                    <Text style={styles.buttonTextWhite} > Sélectionner </Text>
                                                 </TouchableHighlight>
                                             </View>
                                         </View>
@@ -283,8 +283,8 @@ class SearchHome extends React.Component {
                                             
                                         </View>
                                     </Modal>
-                                    <TouchableHighlight  style={styles.buttonOrange}  onPress={()=>this.showResults()} >
-                                            <Text style={styles.buttonText} > Trouver </Text>
+                                    <TouchableHighlight  style={styles.buttonWhite}  onPress={()=>this.showResults()} >
+                                            <Text style={styles.buttonTextOrange} > Trouver </Text>
                                     </TouchableHighlight>
                                     
 

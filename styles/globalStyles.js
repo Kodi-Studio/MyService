@@ -5,9 +5,23 @@ let grey = 'rgba(0, 0, 0, 0.5)';
 let lightGrey = 'rgba(0, 0, 0, 0.3)';
 let superLightGrey  = 'rgba(0, 0, 0, 0.1)';
 let yellow = 'rgba(224, 207, 22, 1)';
+let white = 'rgba(255, 255, 255, 1)';
 
 export default styles = StyleSheet.create({
-  
+    loginTitleBox: {
+      backgroundColor: 'rgba(255,255,255,0.95)',
+      width: "100%",
+      alignItems: 'center',
+      padding: 15,
+      borderTopLeftRadius : 8,
+      borderTopRightRadius : 8
+    },
+    loginTitleText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: lightGrey,
+      marginTop: 10 
+    },
     main: {
       flex: 1,
       alignItems: 'center',
@@ -23,14 +37,14 @@ export default styles = StyleSheet.create({
       color:"#FFFFFF"
     },
     headerHome: {
-        backgroundColor:"#FFFFFF",
-        height:'25%',
+        backgroundColor:'rgba(255,255,255,0)',
+        height:'20%',
         alignItems: 'center',
         justifyContent: 'center',
         width:'100%'
       },
       mainBG: {
-        height: '75%',
+        height: '100%',
         width: '100%',
         flex: 1,
         alignItems: 'center'
@@ -41,8 +55,16 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'transparent'
       },
+      containerLogin: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        width:"70%",
+        marginHorizontal:"15%"
+      },
       input: {
-        width: 200,
+        width: "100%",
         height:50,
         backgroundColor: 'rgba(255, 255, 255, 1)',
         paddingHorizontal: 10,
@@ -50,16 +72,36 @@ export default styles = StyleSheet.create({
         textAlign: "center"
       },
       inputTop: {
-        width: 200,
+        width: "100%",
         height:50,
         backgroundColor: 'rgba(255, 255, 255, 1)',
         paddingHorizontal: 10,
         fontSize: 18,
         textAlign: "center"
       },
+      inputTransp: {
+        width: "100%",
+        height:50,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        paddingHorizontal: 10,
+        fontSize: 18,
+        textAlign: "center"
+      },
+      inputTopTransp: {
+        width: "100%",
+        height:50,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        paddingHorizontal: 10,
+        fontSize: 18,
+        textAlign: "center",
+        borderBottomColor: white,
+        borderBottomWidth:1
+      },
+
+      
       buttonBottom: {
-        backgroundColor: '#ea654c',
-        width: 200,
+        backgroundColor: orange,
+        width: "100%",
         height:50,
         alignItems: 'center',
         padding: 15,
@@ -68,19 +110,23 @@ export default styles = StyleSheet.create({
       },
       buttonTransparent: {
         backgroundColor: 'transparent',
-        width: 200,
+        width: "100%",
         height:50,
         alignItems: 'center',
         padding: 15,
         borderBottomLeftRadius : 8,
         borderBottomRightRadius : 8,
       },
-      buttonText: {
+      buttonTextWhite: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#FFFFFF'
+        color: "#FFFFFF"
       },
-
+      buttonTextOrange: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: orange
+      },
       /* inputsText*/
       textInputStyle: {
         height:40,
@@ -115,17 +161,31 @@ export default styles = StyleSheet.create({
         color: orange,
         textAlign: "left"
       },
-      buttonOrange: {
-        backgroundColor: orange,
+      buttonWhite: {
+        backgroundColor: "#FFFFFF",
         width: "100%",
-        height:50,
+        height:45,
         alignItems: 'center',
-        padding: 15,
+        padding: 10,
         borderBottomLeftRadius : 8,
         borderBottomRightRadius : 8,
         borderTopLeftRadius : 8,
         borderTopRightRadius : 8,
-        marginTop: 30
+        borderColor: orange,
+        marginTop: 25,
+      },
+      buttonOrange: {
+        backgroundColor: orange,
+        width: "100%",
+        height:45,
+        alignItems: 'center',
+        padding: 10,
+        borderBottomLeftRadius : 8,
+        borderBottomRightRadius : 8,
+        borderTopLeftRadius : 8,
+        borderTopRightRadius : 8,
+        borderColor: orange,
+        marginTop: 25
       },
       marginTop30: {
         marginTop: 30
@@ -352,6 +412,23 @@ export default styles = StyleSheet.create({
       btnOrangeTxt: {
         color:"#fff",
         fontSize:20,
+      },
+      ////// MODALS
+      modalHeader: {
+        flexDirection:'row',
+        padding: 12,
+        justifyContent: "space-between",
+        marginTop: 30
+      },
+      modalHeaderClose: {
+        width: 28,
+        height:28,
+        tintColor: orange
+      },
+      modalHeaderLabel: {
+        fontSize:14,
+        paddingVertical:7,
+        color: orange
       }
 
   });

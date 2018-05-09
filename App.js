@@ -54,9 +54,9 @@ const App = TabNavigator({
   tabBarPosition: "bottom",
   tabBarOptions: {
     showLabel: true,
-    activeBackgroundColor: '#dc4f35',
+    activeBackgroundColor: '#EBEBF1',
     inactiveBackgroundColor: '#FFFFFF',
-    activeTintColor: '#FFFFFF',
+    activeTintColor: '#dc4f35',
     inactiveTintColor: '#dc4f35',
     /*labelStyle: {
       color: "#dc4f35"

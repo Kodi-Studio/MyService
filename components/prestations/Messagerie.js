@@ -50,14 +50,10 @@ class Messagerie extends React.Component {
       }
 
       componentWillMount () {
-       // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.hideKeybord );
         this.setState({user:this.props.datas.user});
-        //this.scrollToBottom();
-        //this.scroll.props.scrollToPosition(0, 100)
-        
       }
       componentWillUnmount () {
-       // this.keyboardDidHideListener.remove();
+       
       }
       confirmSendMessage() {
         if(this.state.newMessage!=''){
@@ -137,15 +133,11 @@ class Messagerie extends React.Component {
       }
     
       _keyboardDidHide () {
-        // alert('Keyboard Hidden');
         console.log('fermeture :');
         console.log(  Dimensions.get('window') );
       }
 
       render(){
-        //this.setState({scrollViewHeight:100});
-        //alert(this.state.scrollViewHeight);
-
         return (
           <View>
             <View style={{height:50}} >
