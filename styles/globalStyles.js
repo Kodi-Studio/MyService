@@ -85,7 +85,7 @@ export default styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         paddingHorizontal: 10,
         fontSize: 18,
-        textAlign: "center"
+        textAlign: "left"
       },
       inputTopTransp: {
         width: "100%",
@@ -93,11 +93,20 @@ export default styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         paddingHorizontal: 10,
         fontSize: 18,
-        textAlign: "center",
+        textAlign: "left",
         borderBottomColor: white,
         borderBottomWidth:1
       },
-
+      inputRegister: {
+        width: "100%",
+        height:50,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        paddingHorizontal: 10,
+        fontSize: 18,
+        textAlign: "left",
+        borderBottomColor: lightGrey,
+        borderBottomWidth: 1
+      },
       
       buttonBottom: {
         backgroundColor: orange,

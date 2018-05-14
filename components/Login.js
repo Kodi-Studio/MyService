@@ -6,16 +6,32 @@ import { initUser , initUserLogged, initListeCates } from '../store/action';
 import { map } from 'react-redux';
 import globalStyles from '../styles/globalStyles';
 
+const colorFieldDefault =  "rgba(255,255,255,0)";
+
+
 class Login extends React.Component {
-
-
 
   constructor(props) {
       super(props);
       this.state= {
         login : "",
         pass : "",
-        modalRegisterVisible : false
+        modalRegisterVisible : false,
+        registerFirstname : "",
+        registerLastname : "",
+        registerMail : "",
+        registerPass : "",
+        registerPassconfirm : "",
+        colorFieldDefault : "rgba(255,255,255,0)",
+        tabColorFields : {
+          registerFirstname:colorFieldDefault,
+          registerLastname:colorFieldDefault,
+          registerMail:colorFieldDefault,
+          registerPass:colorFieldDefault,
+          registerPassconfirm:colorFieldDefault
+        },
+        errorFieldColor : "rgba(76,169,225,0.2)"
+        //"rgba(0,117,196,1)"
       }
   }
 
@@ -47,6 +63,25 @@ class Login extends React.Component {
       ///this.props.onSubmit(this.state.login, this.state.pass);
   }
 
+  tryRegister() {
+
+    let tab = this.state.tabColorFields;
+
+    if(this.state.registerFirstname.length == 0)  tab.registerFirstname = this.state.errorFieldColor;
+    if(this.state.registerLastname.length == 0)  tab.registerLastname = this.state.errorFieldColor;
+    if(this.state.registerMail.length == 0)  tab.registerMail = this.state.errorFieldColor;
+    if(this.state.registerPass.length == 0)  tab.registerPass = this.state.errorFieldColor;
+    if(this.state.registerPassconfirm.length == 0)  tab.registerPassconfirm = this.state.errorFieldColor;
+
+
+    this.setState({tabColorFields:tab});
+
+    /*if(this.state.registerPass!=this.state.registerPassconfirm) message+= "Les mots de passe ne correspondent pas.\n";
+
+    if(this.state.registerPass!= this.state.registerPassconfirm) message+= "Les mots de passe ne correspondent pas.\n";*/
+
+  }
+
   closeModal() {
     this.setState({modalRegisterVisible:false});
   }
@@ -64,8 +99,8 @@ class Login extends React.Component {
         <KeyboardAvoidingView behavior="padding" style={{width:"100%", height:"100%"}} >
           <View style={globalStyles.containerLogin} >
             <View style={styles.loginTitleBox} ><Image source={require('../assets/logoH.png')} /></View>
-            <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Identifiant'} value={this.state.login} editable={true} onChangeText= {(login) => this.setState({login})} style={ styles.inputTopTransp } />
-            <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Mot de passe'} value={this.state.pass} editable={true} onChangeText= {(pass) => this.setState({pass})} style={ styles.inputTransp } secureTextEntry={true} />
+            <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Identifiant'} value={this.state.login} editable={true} onChangeText= {(login) => this.setState({login})} style={ styles.inputTopTransp } />
+            <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Mot de passe'} value={this.state.pass} editable={true} onChangeText= {(pass) => this.setState({pass})} style={ styles.inputTransp } secureTextEntry={true} />
             <TouchableHighlight  style={styles.buttonBottom}  onPress={ ()=>this.tryConnect() } >
               <Text style={styles.buttonTextWhite} > Ok </Text>
             </TouchableHighlight>
@@ -85,14 +120,17 @@ class Login extends React.Component {
             </View>
             <View style={globalStyles.containerLogin} >
             <View style={styles.loginTitleBox} ><Image source={require('../assets/logoH.png')} /></View>
-            <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Identifiant'} value={this.state.login} editable={true} onChangeText= {(login) => this.setState({login})} style={ styles.inputTopTransp } />
-            <TextInput placeholderTextColor={'#000000'} editable={true} placeholder={'Mot de passe'} value={this.state.pass} editable={true} onChangeText= {(pass) => this.setState({pass})} style={ styles.inputTransp } secureTextEntry={true} />
-            <TouchableHighlight  style={styles.buttonBottom}  onPress={ ()=>this.closeModal() } >
+            <View ref="_formRegister" >
+              <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Nom'} value={this.state.registerFirstname} editable={true} onChangeText= {(registerFirstname) => this.setState({registerFirstname})} style={ [styles.inputRegister, { backgroundColor:this.state.tabColorFields.registerFirstname}] } />
+              <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Prénom'} value={this.state.registerLastname} editable={true} onChangeText= {(registerLastname) => this.setState({registerLastname})} style={ [styles.inputRegister, { backgroundColor:this.state.tabColorFields.registerLastname}]  } />
+              <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Adresse email'} value={this.state.registerMail} editable={true} onChangeText= {(registerMail) => this.setState({registerMail})} style={ [styles.inputRegister, { backgroundColor:this.state.tabColorFields.registerMail}]  } />
+              <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Mot de passe'} value={this.state.registerPass} editable={true} onChangeText= {(registerPass) => this.setState({registerPass})} style={ [styles.inputRegister, { backgroundColor:this.state.tabColorFields.registerPass}]  } secureTextEntry={true} />
+              <TextInput placeholderTextColor={'rgba(0, 0, 0, 0.5)'} editable={true} placeholder={'Confirmation mot de passe'} value={this.state.registerPassconfirm} editable={true} onChangeText= {(registerPassconfirm) => this.setState({registerPassconfirm})} style={ [styles.inputRegister, { backgroundColor:this.state.tabColorFields.registerPassconfirm}]  } secureTextEntry={true} />
+            </View>
+            <TouchableHighlight  style={styles.buttonBottom}  onPress={ ()=>this.tryRegister() } >
               <Text style={styles.buttonTextWhite} > Ok </Text>
             </TouchableHighlight>
-            <TouchableHighlight  style={styles.buttonWhite}  onPress={ ()=>this.closeModal() } >
-              <Text style={styles.buttonTextOrange} > Inscription </Text>
-            </TouchableHighlight>
+
             </View>
           </Modal>
           { /* END modale d'inscription */ }
